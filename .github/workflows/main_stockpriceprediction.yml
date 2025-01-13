@@ -1,7 +1,6 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
 name: Build and deploy Python app to Azure Web App - StockPricePrediction
 
 on:
@@ -26,22 +25,22 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Install dependencies
+        run: pip install -r fastAPI/requirements.txt  # Install dependencies only for FastAPI app
+
+      # Optional: Add step to run tests here (PyTest, etc.)
+
+      - name: Zip artifact for deployment (FastAPI only)
+        run: |
+          cd fastAPI  # Change directory to FastAPI
+          zip -r release.zip ./*  # Zip all files in the FastAPI folder
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: release.zip  # Upload only the zipped FastAPI files
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,7 +60,6 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -69,10 +67,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_24B125B2A5564B478D6EC0C443E2896F }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_08724A67C11844ED8383EB985A70B246 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: 'Deploy to Azure Web App (FastAPI only)'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'StockPricePrediction'
           slot-name: 'Production'
-          
+          package: ./release.zip  # Deploy the zipped FastAPI package
