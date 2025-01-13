@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/swathhy/Downloads/MASTERS 1st sem'/Resume projects/Swathhy/Stock_prediction_FastAPI/stock_pred_env"
+VIRTUAL_ENV="/Users/swathhy/Downloads/MASTERS 1st sem'/Resume projects/Swathhy/Stock_prediction_FastAPI-1/stock_pred_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
