@@ -16,6 +16,11 @@ class RequestBody(BaseModel):
     Month: int
     Day: int
 
+# Root endpoint (added here)
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Stock Price Prediction API!"}
+    
 #Endpoint to make predictions
 @app.post("/predict")
 def get_prediction(request: RequestBody):
