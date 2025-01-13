@@ -42,9 +42,6 @@ def get_prediction(request: RequestBody):
 
     return {"Stock prediction": float(prediction[0])}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("src.main:app", host="0.0.0.0", port=8000)
     
 # if __name__ == "__main__":
 #     # Test the full preprocessing, training, and prediction flow
